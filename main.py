@@ -1,21 +1,29 @@
 import keyboard
 import time
 
+from utils import settings
+from utils import constants
 from utils import selenium_utils as su
-from utils import word_utils as wu
-from utils.squardle_square import SquardleSquare
+from utils.squardle_square import SquardleSquarePathFinder
 
 
+def main(squaredle_url = constants.SQUARDLE_URL):
+    su.open_squardle_page(squaredle_url)
+    found_letters = su.get_letter_from_square()
 
-su.open_squardle_page()
-found_letters = su.get_letter_square()
+    squardle_solver = SquardleSquarePathFinder(found_letters)
 
-squardle_solver = SquardleSquare(found_letters)
+    for word in squardle_solver.candidate_words:
+        if not word.startswith('g'):
+            continue
+        if squardle_solver.find_path(word):
+            print(word)
+            keyboard.write(word, delay=settings.TYPING_DELAY_BETWEEN_CHARACTERS)
+            keyboard.press_and_release('enter')
+            #su.enter_word(word)
+            time.sleep(settings.TYPING_DELAY_BETWEEN_WORDS)
+            su.close_popups()
 
-for word in squardle_solver.candidate_words:
-    if squardle_solver.find_path(word):
-        print(word)
-        keyboard.write(word, delay=0.05)
-        keyboard.press_and_release('enter')
-        time.sleep(0.5)
-        #su.close_popups()
+if __name__ == "__main__":
+    squardle_url = "https://squaredle.app/?puzzle=hanukkah23"
+    main(squardle_url)

@@ -2,7 +2,7 @@ from utils import constants
 from utils.word_utils import get_candidate_words
 
 
-class SquardleSquare:
+class SquardleSquarePathFinder:
     def __init__(self, letters: list[str]):
         self.letters: list[str] = letters
         # currently assumes that every squaredle is square, so len(row)==len(column)
@@ -12,16 +12,16 @@ class SquardleSquare:
         
         self.letter_square: list[list[str]] = [letters[i*self.square_size : (i+1)*self.square_size] for i in range(self.square_size)]
         self.print_word_square()
-
-        self.letters_contained = set(self.letters)
-        self.letters_to_exclude = set(constants.LETTERS) - self.letters_contained
-        self.candidate_words = get_candidate_words(excluded_letters=''.join(self.letters_to_exclude).lower())
-        self.candidate_words.sort()
-        print(self.candidate_words)
-
+        
         self.all_grid_coordinates = [(i, j)
                                      for i in range(self.square_size)
                                      for j in range(self.square_size)]
+
+        self.letters_contained = set(self.letters)
+        self.letters_to_exclude = sorted(list(set(constants.LETTERS) - self.letters_contained))
+        self.candidate_words = get_candidate_words(excluded_letters=''.join(self.letters_to_exclude).lower())
+        self.candidate_words.sort()
+        print("finished sortng")
         
     def print_word_square(self):
         print(*[' '.join(row) for row in self.letter_square], sep='\n')
@@ -51,25 +51,27 @@ class SquardleSquare:
         return [c for c in candidate_coords if self.is_letter_at_coordinate(letter, c)]
 
 
-    def find_next_letter(self, word, word_index, current_letter_coord_candidates, passed_coords) -> bool:
-        for coord in current_letter_coord_candidates:
-            word_index += 1
-            current_letter = word[word_index]
+    def find_next_letter(self, word, word_index, current_letter_coords, passed_coords) -> bool:
+        word_index += 1
+        current_letter = word[word_index]
+        for coord in current_letter_coords:
             passed_coords.append(coord)
             next_letter_coords = self.letter_in_coords_next_to(passed_coords, passed_coords[-1], current_letter)
             if word_index == len(word) - 1:
                 return bool(next_letter_coords)
             if not next_letter_coords:
-                word_index -= 1
                 passed_coords.pop()
                 continue
-            return self.find_next_letter(word, word_index, next_letter_coords, passed_coords)
-                
+            found_path = self.find_next_letter(word, word_index, next_letter_coords, passed_coords)
+            if found_path:
+                return True
+        return False
 
     def find_path(self, word: str) -> bool:
         word = word.upper()
         first_letter_coords = self.find_first_letter_coords(word[0])
         word_available = self.find_next_letter(word, 0, first_letter_coords, [])
         return word_available
+
     
     

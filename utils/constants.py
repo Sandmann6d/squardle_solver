@@ -13,5 +13,7 @@ MIN_WORD_LENGTH: int = 4
 
 PLACEHOLDER_CHAR = '#'
 
+HIDDEN_ELEMENT_DOM_LOCATION = {'x': 0, 'y': 0}
+
 if __name__ == '__main__':
     print(LETTERS)
