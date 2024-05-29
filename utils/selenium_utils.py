@@ -11,7 +11,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 from utils import constants
-from . import settings
+from utils import settings
 
 
 DRIVER = webdriver.Firefox()
@@ -54,8 +54,7 @@ def deny_cookies():
     except TimeoutException:
         pass
     accept_necessary_button = DRIVER.find_element(By.XPATH, "//button[contains(text(), 'Accept necessary')]")
-    if accept_necessary_button:
-        AC.click(accept_necessary_button).perform()
+    AC.click(accept_necessary_button).perform()
 
 
 def get_letter_from_square() -> list[str]:

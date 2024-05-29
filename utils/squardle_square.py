@@ -1,6 +1,7 @@
 from typing import Tuple
 
 from utils import constants
+from utils.settings import debug_print
 
 Coordinates = Tuple[int, int]
 
@@ -103,25 +104,30 @@ class SquardleSquarePathFinder:
         """
         word_index += 1
         current_letter = word[word_index]
-
-        if word_index == len(word) - 1:  # at the last letter, if it has candidate coordinates, word mst have a path
-            return bool(current_letter_coords)
         
         for i, coord in enumerate(current_letter_coords):
             passed_coords.append(coord)
             next_letter_coords = self.get_adjacent_coords_with_letter(passed_coords[-1], current_letter, passed_coords)
-            #print(word_index, word[:word_index], current_letter_coords, "curr:", coord, "so far:", passed_coords)
+            debug_print(word_index, word[:word_index], current_letter_coords, "curr:", coord, "so far:", passed_coords)
+
+            if word_index == len(word)-1:
+                p = passed_coords.pop()
+                debug_print("popped last letter:", p, self.letter_square[p[0]][p[1]])
+                debug_print(word_index, word[:word_index], current_letter_coords, "so far:", passed_coords)
+                if next_letter_coords:
+                    return True
+                continue
 
             if not next_letter_coords:
                 p = passed_coords.pop()
-                #print("popped and continue:", p, self.letter_square[p[0]][p[1]])
+                debug_print("popped and continue:", p, self.letter_square[p[0]][p[1]])
                 continue
             found_path = self.find_next_letter(word, word_index, next_letter_coords, passed_coords)
             if found_path:  # if path is found, abort the search immediately and return positive result
                 return True
             else:
                 p = passed_coords.pop()
-                #print("popped in else:", p, self.letter_square[p[0]][p[1]])
+                debug_print("popped in else:", p, self.letter_square[p[0]][p[1]])
         return False
 
     def find_path(self, word: str) -> bool:
@@ -135,5 +141,7 @@ class SquardleSquarePathFinder:
         """
         word = word.upper()
         first_letter_coords = self.find_first_letter_coords(word[0])
+        if not first_letter_coords:
+            return False
         word_available = self.find_next_letter(word, 0, first_letter_coords, [])
         return word_available
