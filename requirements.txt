@@ -1,5 +1,4 @@
 selenium ~= 4.21.0
-#beautifulsoup4 ~= 4.12.3
 requests ~= 2.32.0
 aiohttp ~= 3.9.5
 keyboard @ git+https://github.com/Sandmann6d/keyboard.git

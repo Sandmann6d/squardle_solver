@@ -2,7 +2,7 @@ import string
 
 # URLs
 SQUARDLE_URL = "https://squaredle.app"
-SQUARDLE_EXPRESS_URL = f"/{SQUARDLE_URL}?level=xp"
+SQUARDLE_EXPRESS_URL = f"{SQUARDLE_URL}/?level=xp"
 
 # immutable facts of life
 LETTERS: str = string.ascii_uppercase

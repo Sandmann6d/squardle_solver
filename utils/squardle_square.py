@@ -122,6 +122,7 @@ class SquardleSquarePathFinder:
                 p = passed_coords.pop()
                 debug_print("popped and continue:", p, self.letter_square[p[0]][p[1]])
                 continue
+
             found_path = self.find_next_letter(word, word_index, next_letter_coords, passed_coords)
             if found_path:  # if path is found, abort the search immediately and return positive result
                 return True

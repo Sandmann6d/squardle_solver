@@ -14,7 +14,13 @@ from utils import constants
 from utils import settings
 
 
-DRIVER = webdriver.Firefox()
+try:
+    DRIVER = webdriver.Firefox(executable_path='geckodriver.exe')
+except Exception as e:
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_experimental_option("detach", True)  # keep browser open after script is done
+    DRIVER = webdriver.Chrome(options=chrome_options)
+
 AC = ActionChains(DRIVER)
 
 
