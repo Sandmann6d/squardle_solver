@@ -5,6 +5,8 @@ This script automatically solves Squardle puzzles. Running `main.py` will:
 2) send get requests to a US Scrabble dictionary API for all words that exclude letters absent on the puzzle (like [word.tips](https://word.tips/words-with-letters/));
 3) then, for each word, check whether it is playable on the puzzle and, if it is, enter it by typing and hitting the enter key.
 
+https://github.com/Sandmann6d/squardle_solver/assets/97108287/36f964fe-28f7-4917-bfa5-152f048bdafc
+
 ### Installation
 - Requires Python >= 3.10
 - Create [virtual environment](https://docs.python.org/3/library/venv.html)
