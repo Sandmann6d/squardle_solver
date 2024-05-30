@@ -83,7 +83,7 @@ def close_popups():
     """
     After entering a word, some popups might appear, some with a delayed close button. Clicks those away.
     """
-    for popup_id in ["bonusWordDialog", "wordOfTheDay", "dialog"]:
+    for popup_id in ["bonusWordDialog", "wordOfTheDay", "dialog", "allBonusWordsFound"]:
         try:
             popup_panel = DRIVER.find_element(By.ID, popup_id)
             if popup_panel.location != constants.HIDDEN_ELEMENT_DOM_LOCATION:

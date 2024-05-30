@@ -75,7 +75,7 @@ async def gather_additional_requests(word_list: list[str], urls: list[str]):
         word_list: word list instance to add the words to
         urls: paginated URLs to request for additional calls
     """
-    async with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
         await asyncio.gather(*(get_additional_words(word_list, url, session) for url in urls))
 
 
@@ -104,7 +104,7 @@ async def get_additional_words(word_list: list[str], url: str, session: aiohttp.
 
 
 if __name__ == "__main__":
-    l = "jqx"
+    l = "jqxdletgbs"
     settings.PRINT_POLLED_WORDS = True
     w = get_candidate_words(excluded_letters=l)
     print(w)
