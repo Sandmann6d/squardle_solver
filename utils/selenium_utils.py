@@ -1,6 +1,4 @@
-
 import keyboard
-import time
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -87,11 +85,12 @@ def close_popups():
         try:
             popup_panel = DRIVER.find_element(By.ID, popup_id)
             if popup_panel.location != constants.HIDDEN_ELEMENT_DOM_LOCATION:
-                close_button = WebDriverWait(DRIVER, 5).until(EC.visibility_of_element_located((By.XPATH, "/html/body/div[42]/h2/div/a")))  # TODO: more robust locator
+                close_button = WebDriverWait(DRIVER, 5).until(EC.visibility_of_element_located(
+                    (By.XPATH, "/html/body/div[42]/h2/div/a")))  # TODO: more robust locator
                 AC.click(close_button).perform()
         except TimeoutException as e:
-            # TODO: close_button is not located reliably on "wordOfTheDay" and "dialog" (Excluded word) popups.
-            # For now, we close them by pressing the Esc key.
+            # TODO: close_button is not located reliably on every popup.
+            # For now, we close those by pressing the Esc key.
             if settings.ENTER_WORDS_WITH_WEBDRIVER:
                     AC.key_down(Keys.ESCAPE).key_up(Keys.ESCAPE).perform()
             else:

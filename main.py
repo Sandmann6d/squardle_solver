@@ -38,8 +38,8 @@ if __name__ == "__main__":
     else:
         """ started in IDE, enter Squardle URL by altering code here """
         pass
-        #squardle_url = "https://squaredle.app/?puzzle=arbor-day-24"
-        squardle_url = constants.SQUARDLE_EXPRESS_URL
+        # squardle_url = "https://squaredle.app/?puzzle=arbor-day-24"
+        # squardle_url = constants.SQUARDLE_EXPRESS_URL
 
     assert squardle_url.startswith(constants.SQUARDLE_URL), \
         f"entered URL {squardle_url} needs to start with {constants.SQUARDLE_URL}!"

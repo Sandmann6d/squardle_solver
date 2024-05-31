@@ -43,7 +43,7 @@ def test_do_not_find_hallucinated_words():
         print(f"did not find {word.upper()}, successfully!")
 
 
-def test_non_existent_starting_letter_words():
+def test_do_not_find_non_existent_starting_letter_words():
     for word in non_existent_starting_letter_words:
         assert path_finder.find_path(word) is False
         print(f"did not find {word.upper()}, successfully!")
@@ -54,11 +54,9 @@ def test_path_finder():
     test_do_not_find_absent_words()
     test_find_difficult_words()
     test_do_not_find_hallucinated_words()
-    test_non_existent_starting_letter_words()
+    test_do_not_find_non_existent_starting_letter_words()
     print("tests passed!")
 
 
 if __name__ == "__main__":
-    import sys; print(sys.argv)
-    sys.exit()
     test_path_finder()
