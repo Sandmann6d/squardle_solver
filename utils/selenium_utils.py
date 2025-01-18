@@ -32,7 +32,7 @@ def open_squardle_page(url: str = constants.SQUARDLE_URL):
     assert url.startswith(constants.SQUARDLE_URL), f"{url} needs to start with {constants.SQUARDLE_URL}"
     DRIVER.get(url)
     skip_tutorial()
-    deny_cookies()
+    close_cookie_notice()
     
 
 def skip_tutorial():
@@ -47,18 +47,23 @@ def skip_tutorial():
         WebDriverWait(DRIVER, 10).until(EC.visibility_of_any_elements_located((By.CLASS_NAME, "notTutorial")))
 
 
-def deny_cookies():
+def close_cookie_notice():
     """
     Clicks away cookie notices. (Since login is not implented, the WebDriver instance does not have stored cookies.)
     """
     try:
-        privacy_notice = WebDriverWait(DRIVER, 20).until(EC.visibility_of_element_located((By.XPATH, "//h2[contains(text(),'We value your privacy')]")))
+        privacy_notice = WebDriverWait(DRIVER, 20).until(EC.visibility_of_element_located(
+            (By.XPATH, "//h2[contains(text(),'We value your privacy')]|//h2[contains(text(),'personal data')]")))
         continue_button = DRIVER.find_element(By.XPATH, "//button/span[contains(text(), 'Continue')]")
         AC.click(continue_button).perform()
-    except TimeoutException:
+    except (TimeoutException, NoSuchElementException):
         pass
-    accept_necessary_button = DRIVER.find_element(By.XPATH, "//button[contains(text(), 'Accept necessary')]")
-    AC.click(accept_necessary_button).perform()
+    try:
+        accept_necessary_button = DRIVER.find_element(
+            By.XPATH, "//button[contains(text(), 'Accept necessary')]|//button[@aria-label='Consent']")
+        AC.click(accept_necessary_button).perform()
+    except NoSuchElementException:
+        print("Failed to click away cookie notices.")  # but the puzzle will be played despite the cookie notice
 
 
 def get_letter_from_square() -> list[str]:
